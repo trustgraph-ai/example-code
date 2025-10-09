@@ -7,6 +7,7 @@ This repository contains example applications demonstrating how to build with Tr
 ### UI Examples
 
 - **[simple-qa](ui/simple-qa/)** - A minimal question-and-answer app demonstrating the `useInference` hook and basic TrustGraph integration
+- **[claude](ui/claude/)** - A chat interface built with Claude Code demonstrating conversational UI patterns and GraphRAG integration ([prompts](ui/claude/PROMPTS.md))
 
 ## About TrustGraph
 

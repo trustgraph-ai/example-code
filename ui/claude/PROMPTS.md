@@ -7,30 +7,39 @@ This is a transcript of working prompts that successfully built a React chat app
 
 ## Prompts
 
-**Create a React application in this directory. Use:**
+```
+Create a React application in this directory. Use:
 - Typescript
 - Vite
 
 This might work:
-```
+
 npx --yes create-vite . --template react-ts
 ```
 
 ---
 
-**Downgrade to React 18**
+```
+Downgrade to React 18
+```
 
 ---
 
-**Install @trustgraph/react-state and read the README.**
+```
+Install @trustgraph/react-state and read the README.
+```
 
 ---
 
-**Update vite.config.ts to proxy to the TrustGraph websocket in line with the README you just read.**
+```
+Update vite.config.ts to proxy to the TrustGraph websocket in line with the
+README you just read.
+```
 
 ---
 
-**Now replace the React app placeholder page with a real application:**
+```
+Now replace the React app placeholder page with a real application:
 
 Chat Interface: Build a classic conversational UI with:
 - A scrollable message list displaying the conversation history
@@ -43,18 +52,24 @@ Chat Interface: Build a classic conversational UI with:
 - Disabled input during message submission
 
 Use the TrustGraph GraphRAG service to provide messages. Use collection 'default' flow 'default'. Operate as user 'trustgraph'.
+```
 
 ---
 
-**Run npm build and fix any problems**
+```
+Run npm build and fix any problems
+```
 
 ---
 
-**It overflows the screen top and bottom, can you fix?**
+```
+It overflows the screen top and bottom, can you fix?
+```
 
 ## Trying to do it in a single prompt
 
-** Create a TODO list and execute the following steps:**
+```
+Create a TODO list and execute the following steps:
 - Create a React application in this directory. Use:
   - Typescript
   - Vite
@@ -83,5 +98,9 @@ Chat Interface: Build a classic conversational UI with:
 - Loading state showing "Sending..." on the button while processing
 - Disabled input during message submission
 
-Use the TrustGraph GraphRAG service to provide messages. Use collection 'default' flow 'default'. Operate as user 'trustgraph'.
+Use the TrustGraph GraphRAG service to provide messages.
+Use collection 'default' flow 'default'.
+Operate as user 'trustgraph'.
+```
+
 

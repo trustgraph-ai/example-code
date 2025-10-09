@@ -1,7 +1,8 @@
 
 # Building a TrustGraph App with Claude Code
 
-This is a transcript of working prompts that successfully built a React chat application using TrustGraph. A lot of Claude output has been trimmed for brevity.
+This is a transcript of working prompts that successfully built a React chat
+application using TrustGraph.
 
 ![Screenshot](screenshot.png)
 
@@ -103,4 +104,46 @@ Use collection 'default' flow 'default'.
 Operate as user 'trustgraph'.
 ```
 
+## Tips
+
+### Managing Non-Determinism
+- Coding models are non-deterministic. Accept that errors happen, and
+  work out how to find them. (Hint: get code assistants to write tests).
+- It may not look the same twice running.
+- Writing multiple components might produce different approaches in the
+  same app, so get the code assistant to write a tech spec for common
+  styles and approaches.
+
+### Effective Prompting
+- **Be specific**: Instead of "fix the styling", say "center the chat
+  container and prevent vertical overflow"
+- **Break down complex tasks**: Use TODO lists for multi-step work - this
+  helps the assistant track progress and ensures nothing is missed
+- **Provide context**: Share relevant file paths, error messages, or
+  screenshots
+- **Iterate incrementally**: Build features step-by-step rather than
+  requesting everything at once
+
+### Working with Code
+- **Read before write**: Always ask the assistant to read existing code/docs
+  first to understand patterns and conventions
+- **Review generated code**: Check that the assistant's changes align with
+  your project's architecture
+- **Run and validate**: Execute builds, tests, and linting after changes -
+  catch issues early
+- **Version control**: Commit working states frequently so you can roll back
+  if needed
+
+### Troubleshooting
+- When stuck, ask the assistant to search the codebase for similar
+  implementations
+- Request the assistant to read error logs and trace the issue systematically
+- If an approach isn't working, explicitly ask to try a different strategy
+- Use the assistant to write debugging code or add detailed logging
+
+### Productivity Tips
+- Batch related questions together to reduce context switching
+- Keep the assistant focused on one problem domain at a time
+- Use the assistant to generate boilerplate, tests, and documentation
+- Ask for explanations of unfamiliar code or patterns to learn as you go
 

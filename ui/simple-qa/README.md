@@ -357,12 +357,138 @@ const notificationHandler = {
 }
 ```
 
+### Deploying to Production
+
+#### Build for Production
+
+```bash
+# Create optimized production build
+npm run build
+
+# This creates a 'dist' folder with static files ready to deploy
+```
+
+The build output is a static site that can be hosted on any web server (nginx, Apache, Cloudflare Pages, etc.).
+
+#### Production WebSocket Configuration
+
+In production, you need to configure your web server to proxy `/api/socket` to your TrustGraph API gateway. Here's a complete nginx example:
+
+```nginx
+# /etc/nginx/sites-available/trustgraph-app
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    # Serve the React app static files
+    root /var/www/trustgraph-app/dist;
+    index index.html;
+
+    # Handle React Router (SPA fallback)
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Proxy WebSocket connections to TrustGraph API gateway
+    location /api/socket {
+        proxy_pass http://trustgraph-api:8088/api/v1/socket;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+
+        # WebSocket timeout settings
+        proxy_read_timeout 86400s;
+        proxy_send_timeout 86400s;
+    }
+
+}
+```
+
+**Key Configuration Points:**
+
+1. **Static Files**: Your React app's built files are served from `/var/www/trustgraph-app/dist`
+2. **WebSocket Proxy**: `/api/socket` is proxied to the TrustGraph API gateway with proper WebSocket headers
+3. **Connection Headers**: `Upgrade` and `Connection` headers enable WebSocket protocol
+4. **Timeouts**: Long timeout values keep WebSocket connections alive
+5. **SPA Fallback**: All non-API routes fall back to `index.html` for client-side routing
+
+#### Alternative: Docker Compose Setup
+
+For containerized deployments:
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Your React app served by nginx
+  web:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./dist:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - trustgraph-api
+
+  # TrustGraph API gateway
+  trustgraph-api:
+    image: trustgraph/api-gateway:latest
+    ports:
+      - "8088:8088"
+    environment:
+      - LLM_BACKEND=openai
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+```
+
+#### Apache Configuration
+
+If using Apache instead of nginx:
+
+```apache
+# /etc/apache2/sites-available/trustgraph-app.conf
+<VirtualHost *:80>
+    ServerName your-domain.com
+    DocumentRoot /var/www/trustgraph-app/dist
+
+    # Serve static files
+    <Directory /var/www/trustgraph-app/dist>
+        Options -Indexes +FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    # Enable WebSocket proxy modules
+    # a2enmod proxy proxy_http proxy_wstunnel rewrite
+
+    # WebSocket proxy
+    ProxyPreserveHost On
+    RewriteEngine On
+    RewriteCond %{HTTP:Upgrade} websocket [NC]
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    RewriteRule ^/api/socket$ ws://trustgraph-api:8088/api/v1/socket [P,L]
+
+    # Regular API proxy
+    ProxyPass /api/socket ws://trustgraph-api:8088/api/v1/socket
+    ProxyPassReverse /api/socket ws://trustgraph-api:8088/api/v1/socket
+
+    # SPA fallback for client-side routing
+    FallbackResource /index.html
+</VirtualHost>
+```
+
 ## Common Issues
 
 ### WebSocket Connection Failed
 - Ensure TrustGraph API gateway is running on `localhost:8088`
 - Check that the proxy configuration in `vite.config.js` is correct
 - Verify no firewall is blocking port 8088
+- In production, verify nginx/Apache proxy configuration is correct
 
 ### Module Not Found Errors
 - Run `npm install` to ensure all dependencies are installed

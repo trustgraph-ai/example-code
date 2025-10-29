@@ -174,6 +174,9 @@ So far, this app is running in 'dev' mode. The roadmap to production depends hug
 * The websocket is in a different domain than the React app. 
 * Authentication.
 
+Compiling the app consists of running `npm run build` which creates a
+'production' quality build in `dist/`.
+
 A simple approach is to use a web-server with websocket proxy built-in.
 By having the websocket proxy in the same URL domain as the React app, there
 are no cross-domain problems to deal with.
@@ -190,5 +193,4 @@ nginx.
 
 Authentication is well beyond the scope of this tutorial - you could
 at options for integration of auth with the nginx wrapper.
-
 

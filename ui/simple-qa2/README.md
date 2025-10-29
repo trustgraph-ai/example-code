@@ -188,3 +188,7 @@ configuration for websocket proxying.  There is also a Containerfile
 to build a container which is a good way of deploying a React app with
 nginx.
 
+Authentication is well beyond the scope of this tutorial - you could
+at options for integration of auth with the nginx wrapper.
+
+

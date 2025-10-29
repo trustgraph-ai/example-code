@@ -159,7 +159,7 @@ npm run dev
 
 The output shows you a URL to visit, and you should see a screen like this:
 
-![screenshot.png](screenshot)
+![App screenshot](screenshot.png)
 
 Type something like "What is cheese" in the question box, and click Submit.
 After an LLM round-trip you should see the answer in the response box.
